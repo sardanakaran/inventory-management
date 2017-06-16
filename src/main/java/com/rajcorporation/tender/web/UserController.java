@@ -51,7 +51,7 @@ public class UserController {
 		return "login test";
 	}
 
-	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
+	@RequestMapping(value = {"/welcome" }, method = RequestMethod.GET)
 	public String welcome() {
 		return "welcome";
 	}
