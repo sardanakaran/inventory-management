@@ -37,6 +37,11 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-security")
 	//compile group: 'javax.servlet', name: 'jstl', version: '1.2'
 	
+	compile ("io.swagger:swagger-annotations:1.5.0")
+	compile ("io.springfox:springfox-swagger2:2.3.0")
+	compile ("io.springfox:springfox-swagger-ui:2.3.0")
+	
+	
     runtime group: 'org.hsqldb', name: 'hsqldb', version: '2.0.0'
 	testCompile("junit:junit")
 }
