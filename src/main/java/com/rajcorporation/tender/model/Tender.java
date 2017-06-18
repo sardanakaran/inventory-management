@@ -11,8 +11,8 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.rajcorporation.tender.web.SaveGroup;
-import com.rajcorporation.tender.web.UpdateGroup;
+import com.rajcorporation.tender.validator.SaveGroup;
+import com.rajcorporation.tender.validator.UpdateGroup;
 
 @Entity
 public class Tender {

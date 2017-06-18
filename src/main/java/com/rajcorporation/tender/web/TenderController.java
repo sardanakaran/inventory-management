@@ -25,7 +25,9 @@ import com.rajcorporation.tender.model.PaginationData;
 import com.rajcorporation.tender.model.Tender;
 import com.rajcorporation.tender.model.TenderList;
 import com.rajcorporation.tender.service.TenderService;
+import com.rajcorporation.tender.validator.SaveGroup;
 import com.rajcorporation.tender.validator.TenderValidator;
+import com.rajcorporation.tender.validator.UpdateGroup;
 
 /**
  * @author karan
