@@ -20,4 +20,8 @@ public interface TenderService {
 
 	public Page<Tender> findAll(Pageable pageable);
 
+	public boolean attachFile(Long tenderId, String fileName);
+
+	public boolean removeFile(Long tendedId, Long fileId);
+
 }

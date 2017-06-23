@@ -1,36 +1,64 @@
 package com.rajcorporation.tender.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rajcorporation.tender.validator.SaveGroup;
 import com.rajcorporation.tender.validator.UpdateGroup;
 
+import lombok.Data;
+
 @Entity
+@Data
+@JsonIgnoreProperties(value = "files", allowGetters = true, allowSetters = false)
 public class Tender {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@NotEmpty(groups = { UpdateGroup.class })
+	@Column(name = "tender_id")
 	private Long id;
 
 	private String districtName;
-	
+
 	@NotEmpty(groups = { SaveGroup.class, UpdateGroup.class })
 	private String work;
-	
+
 	private String letterOfInterest;
 
 	@OneToOne(targetEntity = Agreement.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "agreement_id")
 	private Agreement agreement;
+
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+	@JoinColumn(name = "file_id", referencedColumnName = "tender_id")
+	@JsonIgnore
+	private List<FileInfo> files = new ArrayList<>();
+
+	@JsonProperty
+	public List<FileInfo> getFiles() {
+		return files;
+	}
+
+	@JsonIgnore
+	public void setFiles(List<FileInfo> files) {
+		this.files = files;
+	}
 
 	public Long getId() {
 		return id;
@@ -38,6 +66,11 @@ public class Tender {
 
 	public String getDistrictName() {
 		return districtName;
+	}
+
+	public Tender withFile(FileInfo file) {
+		this.files.add(file);
+		return this;
 	}
 
 	public void setDistrictName(String districtName) {

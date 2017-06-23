@@ -93,6 +93,18 @@ public class TenderController {
 		}
 	}
 
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public boolean attachFile(@RequestParam(required = true) String fileName,
+			@RequestParam(required = true) Long tenderId) {
+		return service.attachFile(tenderId, fileName);
+	}
+
+	@RequestMapping(value = "/remove", method = RequestMethod.DELETE)
+	public boolean removeFile(@RequestParam(required = true) Long fileId,
+			@RequestParam(required = true) Long tenderId) {
+		return service.removeFile(tenderId, fileId);
+	}
+
 	private <T> PaginationData getPaginationData(Page<T> pagedInformation) {
 		long totalElements = pagedInformation.getTotalElements();
 		PaginationData data = new PaginationData();
