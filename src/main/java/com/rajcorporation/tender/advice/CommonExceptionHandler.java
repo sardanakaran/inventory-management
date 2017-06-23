@@ -14,6 +14,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.rajcorporation.tender.exception.StorageFileNotFoundException;
 import com.rajcorporation.tender.exception.ValidationException;
 import com.rajcorporation.tender.model.ErrorInfo;
 
@@ -35,6 +36,12 @@ public class CommonExceptionHandler {
 	@ExceptionHandler(value = Exception.class)
 	public ResponseEntity<ErrorInfo> handleException(Exception ex) {
 		return ResponseEntity.badRequest().body(new ErrorInfo().withError(ex.getMessage()));
+	}
+
+	@SuppressWarnings("rawtypes")
+	@ExceptionHandler(StorageFileNotFoundException.class)
+	public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
+		return ResponseEntity.notFound().build();
 	}
 
 	public ResponseEntity<ErrorInfo> getErrorResponse(BindingResult result) {
