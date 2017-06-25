@@ -45,9 +45,7 @@ public class CommonExceptionHandler {
 	}
 
 	public ResponseEntity<ErrorInfo> getErrorResponse(BindingResult result) {
-
 		ErrorInfo info = new ErrorInfo();
-
 		for (ObjectError objectError : result.getAllErrors()) {
 			String message;
 			try {
@@ -56,7 +54,6 @@ public class CommonExceptionHandler {
 			} catch (NoSuchMessageException e) {
 				message = null;
 			}
-
 		}
 		return ResponseEntity.badRequest().body(info);
 	}

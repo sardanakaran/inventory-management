@@ -1,32 +1,41 @@
 package com.rajcorporation.tender.service;
 
-import com.rajcorporation.tender.model.User;
-import com.rajcorporation.tender.repository.RoleRepository;
-import com.rajcorporation.tender.repository.UserRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import com.rajcorporation.tender.security.auth.model.User;
+import com.rajcorporation.tender.security.auth.repository.UserRepository;
+
+/**
+ * Created by fan.jin on 2016-10-15.
+ */
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void save(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
-        userRepository.save(user);
+    @PreAuthorize("hasRole('USER')")
+    public User findByUsername( String username ) throws UsernameNotFoundException {
+        User u = userRepository.findByUsername( username );
+        return u;
     }
 
-    @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    @PreAuthorize("hasRole('ADMIN')")
+    public User findById( Long id ) throws AccessDeniedException {
+        User u = userRepository.findOne( id );
+        return u;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<User> findAll() throws AccessDeniedException {
+        List<User> result = userRepository.findAll();
+        return result;
     }
 }

@@ -125,7 +125,7 @@ public class FileSystemStorageService implements StorageService {
 
 			return !Files.exists(this.base.resolve(Paths.get(path)));
 		} catch (IOException e) {
-			log.error("Couldn't delete the file", e);
+			//log.error("Couldn't delete the file", e);
 			return false;
 		}
 	}
