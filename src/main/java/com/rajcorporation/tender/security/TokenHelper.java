@@ -18,10 +18,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 
-/**
- * Created by fan.jin on 2016-10-19.
- */
-
 @Component
 public class TokenHelper {
 

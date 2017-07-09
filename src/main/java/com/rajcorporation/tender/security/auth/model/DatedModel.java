@@ -12,9 +12,7 @@ import javax.persistence.PreUpdate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- * Created by fan.jin on 2017-05-11.
- */
+
 @MappedSuperclass
 public class DatedModel implements Serializable {
 

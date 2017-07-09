@@ -8,9 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.rajcorporation.tender.security.auth.model.DeletableModel;
 
-/**
- * Created by fan.jin on 2017-05-11.
- */
 @NoRepositoryBean
 public interface DeletableModelRepository<T extends DeletableModel>
         extends PagingAndSortingRepository<T, Long> {

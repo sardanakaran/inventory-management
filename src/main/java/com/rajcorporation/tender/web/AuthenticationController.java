@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rajcorporation.tender.security.TokenHelper;
 import com.rajcorporation.tender.security.auth.model.UserTokenState;
 
-/**
- * Created by fan.jin on 2017-05-10.
- */
 
 @RestController
 @RequestMapping( value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE )

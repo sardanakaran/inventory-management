@@ -11,10 +11,6 @@ import org.springframework.stereotype.Service;
 import com.rajcorporation.tender.security.auth.model.User;
 import com.rajcorporation.tender.security.auth.repository.UserRepository;
 
-/**
- * Created by fan.jin on 2016-10-15.
- */
-
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired

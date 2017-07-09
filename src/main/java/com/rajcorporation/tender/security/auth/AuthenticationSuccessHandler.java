@@ -1,8 +1,5 @@
 package com.rajcorporation.tender.security.auth;
 
-/**
- * Created by fan.jin on 2016-11-07.
- */
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -48,6 +45,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         Cookie authCookie = new Cookie( TOKEN_COOKIE, ( jws ) );
 		authCookie.setPath( "/" );
 		authCookie.setHttpOnly( true );
+		
+		
 		authCookie.setMaxAge( EXPIRES_IN );
 		// Add cookie to response
 		response.addCookie( authCookie );

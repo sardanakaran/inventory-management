@@ -21,9 +21,6 @@ import com.rajcorporation.tender.security.auth.RestAuthenticationEntryPoint;
 import com.rajcorporation.tender.security.auth.TokenAuthenticationFilter;
 import com.rajcorporation.tender.service.CustomUserDetailsService;
 
-/**
- * Created by fan.jin on 2016-10-19.
- */
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
