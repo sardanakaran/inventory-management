@@ -37,8 +37,6 @@ public class TenderServiceImpl implements TenderService {
 	@Autowired
 	FileInfoRepository fileRepo;
 
-	@Value("${file.upload.directory}")
-	String location;
 
 	@Override
 	@Transactional

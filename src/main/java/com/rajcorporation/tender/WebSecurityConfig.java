@@ -56,15 +56,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()/*.
-                .ignoringAntMatchers("/auth/login")
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-                .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS ).and()*/
+        http.csrf().disable()
                 .exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
                 .authorizeRequests()
-                .anyRequest()
-                .authenticated().and()
+                .anyRequest().hasRole("ADMIN")
+                .and()
                 .formLogin()
                 .loginPage("/auth/login")
                 .successHandler(authenticationSuccessHandler)
@@ -72,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
                 .logoutSuccessHandler(logoutSuccess)
-                .deleteCookies(TOKEN_COOKIE);
+                .deleteCookies(TOKEN_COOKIE, "JSESSIONID");
 
     }
 

@@ -125,7 +125,7 @@ public class TokenHelper {
          */
         Cookie authCookie = getCookieValueByName( request, AUTH_COOKIE );
         if ( authCookie != null ) {
-            return authCookie.getValue();
+        	return authCookie.getValue();
         }
         /**
          *  Getting the token from Authentication header
