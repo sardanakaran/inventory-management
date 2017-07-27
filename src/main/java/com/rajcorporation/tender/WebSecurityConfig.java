@@ -9,10 +9,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.rajcorporation.tender.security.auth.AuthenticationFailureHandler;
 import com.rajcorporation.tender.security.auth.AuthenticationSuccessHandler;
@@ -53,10 +54,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
+    
+    @Bean
+	public CorsFilter corsFilter() { 
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    CorsConfiguration config = new CorsConfiguration();
+	    config.setAllowCredentials(true);
+	    config.addAllowedOrigin("*");
+	    config.addAllowedHeader("*");
+	    config.addAllowedMethod("*");
+	    source.registerCorsConfiguration("/**", config);
+	    return new CorsFilter(source);
+	}
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.csrf().disable().cors().and()
                 .exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
                 .authorizeRequests()
