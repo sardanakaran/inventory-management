@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
     
-    @Bean
+    /*@Bean
 	public CorsFilter corsFilter() { 
 	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	    CorsConfiguration config = new CorsConfiguration();
@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    config.addAllowedMethod("*");
 	    source.registerCorsConfiguration("/**", config);
 	    return new CorsFilter(source);
-	}
+	}*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
