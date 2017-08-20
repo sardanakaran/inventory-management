@@ -41,14 +41,13 @@ public class Tender {
 
 	private String letterOfInterest;
 
-	@OneToOne(targetEntity = Agreement.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "agreement_id")
-	private Agreement agreement;
-
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-	@JoinColumn(name = "file_id", referencedColumnName = "tender_id")
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "tender")
 	@JsonIgnore
 	private List<FileInfo> files = new ArrayList<>();
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "boq_id")
+	private BOQ boq;
 
 	@JsonProperty
 	public List<FileInfo> getFiles() {
@@ -70,6 +69,7 @@ public class Tender {
 
 	public Tender withFile(FileInfo file) {
 		this.files.add(file);
+		file.setTender(this);
 		return this;
 	}
 
@@ -91,14 +91,6 @@ public class Tender {
 
 	public void setLetterOfInterest(String letterOfInterest) {
 		this.letterOfInterest = letterOfInterest;
-	}
-
-	public Agreement getAgreement() {
-		return agreement;
-	}
-
-	public void setAgreement(Agreement agreement) {
-		this.agreement = agreement;
 	}
 
 }

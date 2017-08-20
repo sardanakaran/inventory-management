@@ -1,31 +1,47 @@
 package com.rajcorporation.tender.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/*@Entity
-@Data*/
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.Data;
+
+@Entity
+@Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BOQ {
 
-	Long tenderId;
-	int version;
-	List<BOQItem> itemsList;
-	
-	public Long getTenderId() {
-		return tenderId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	Long id;
+
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "boq")
+	List<BOQItem> itemsList = new ArrayList<>();
+
+	public BOQ withItem(BOQItem item) {
+		if (itemsList.add(item))
+			item.setBoq(this);
+		return this;
 	}
-	public void setTenderId(Long tenderId) {
-		this.tenderId = tenderId;
+
+	public BOQ withItems(List<BOQItem> items) {
+		items.forEach(item -> withItem(item));
+		return this;
 	}
-	public int getVersion() {
-		return version;
+
+	public BOQ removeItem(BOQItem item) {
+		if (itemsList.remove(item)) {
+			item.setBoq(null);
+		}
+		return this;
 	}
-	public void setVersion(int version) {
-		this.version = version;
-	}
-	public List<BOQItem> getItemsList() {
-		return itemsList;
-	}
-	public void setItemsList(List<BOQItem> itemsList) {
-		this.itemsList = itemsList;
-	}
+
 }

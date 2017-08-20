@@ -22,75 +22,67 @@ import com.rajcorporation.tender.security.auth.RestAuthenticationEntryPoint;
 import com.rajcorporation.tender.security.auth.TokenAuthenticationFilter;
 import com.rajcorporation.tender.service.CustomUserDetailsService;
 
-
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${jwt.cookie}")
-    private String TOKEN_COOKIE;
+	@Value("${jwt.cookie}")
+	private String TOKEN_COOKIE;
 
-    @Bean
-    public TokenAuthenticationFilter jwtAuthenticationTokenFilter() throws Exception {
-        return new TokenAuthenticationFilter();
-    }
-
-    @Autowired
-    private CustomUserDetailsService jwtUserDetailsService;
-
-    @Autowired
-    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-
-    @Autowired
-    private LogoutSuccess logoutSuccess;
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService);
-    }
-
-    @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
-    
-    @Bean
-	public CorsFilter corsFilter() { 
-	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	    CorsConfiguration config = new CorsConfiguration();
-	    config.setAllowCredentials(true);
-	    config.addAllowedOrigin("*");
-	    config.addAllowedHeader("*");
-	    config.addAllowedMethod("*");
-	    source.registerCorsConfiguration("/**", config);
-	    return new CorsFilter(source);
+	@Bean
+	public TokenAuthenticationFilter jwtAuthenticationTokenFilter() throws Exception {
+		return new TokenAuthenticationFilter();
 	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().and()
-                .exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
-                .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
-                .authorizeRequests()
-                .anyRequest().hasRole("ADMIN")
-                .and()
-                .formLogin()
-                .loginPage("/auth/login")
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler).and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
-                .logoutSuccessHandler(logoutSuccess)
-                .deleteCookies(TOKEN_COOKIE, "JSESSIONID");
+	@Autowired
+	private CustomUserDetailsService jwtUserDetailsService;
 
-    }
+	@Autowired
+	private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-    @Override
+	@Autowired
+	private LogoutSuccess logoutSuccess;
+
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(jwtUserDetailsService);
+	}
+
+	@Autowired
+	private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+	@Autowired
+	private AuthenticationFailureHandler authenticationFailureHandler;
+
+	@Bean
+	public CorsFilter corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedOrigin("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+		source.registerCorsConfiguration("/**", config);
+		return new CorsFilter(source);
+	}
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable().cors().and().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
+				.and().addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
+				.authorizeRequests().anyRequest().hasRole("ADMIN").and().formLogin().loginPage("/auth/login")
+				.successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler).and()
+				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
+				.logoutSuccessHandler(logoutSuccess).deleteCookies(TOKEN_COOKIE, "JSESSIONID");
+
+	}
+
+	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
-				"/swagger-ui.html", "/webjars/**");
-		//web.ignoring().antMatchers("/**");
+		// web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui",
+		// "/swagger-resources", "/configuration/security",
+		// '' "/swagger-ui.html", "/webjars/**");
+		web.ignoring().antMatchers("/**");
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.rajcorporation.tender.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,21 +10,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
 @Entity
 @Data
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class BOQItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
-	
-	@OneToOne(targetEntity = Agreement.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "item_id")
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "boqItem")
 	MaterialItem item;
-	Long tenderId;
+
 	int tenderVersion;
 	String procuredBy;
 	Long quantity;
@@ -31,6 +39,20 @@ public class BOQItem {
 	double totalSupplyCost;
 	double errectionCost;
 	double errectionCostWithTaxes;
+
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "boqItem")
+	List<DataInspection> dataInspection = new ArrayList<>();
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "boq_id")
+	@JsonIgnore
+	BOQ boq;
+
+	public BOQItem addDataInspection(DataInspection inspection) {
+		dataInspection.add(inspection);
+		inspection.setBoqItem(this);
+		return this;
+	}
 
 	public Long getId() {
 		return id;
@@ -44,14 +66,6 @@ public class BOQItem {
 		this.item = item;
 	}
 
-	public Long getTenderId() {
-		return tenderId;
-	}
-
-	public void setTenderId(Long tenderId) {
-		this.tenderId = tenderId;
-	}
-	
 	public int getTenderVersion() {
 		return tenderVersion;
 	}
@@ -59,7 +73,7 @@ public class BOQItem {
 	public void setTenderVersion(int tenderVersion) {
 		this.tenderVersion = tenderVersion;
 	}
-	
+
 	public String getProcuredBy() {
 		return procuredBy;
 	}
