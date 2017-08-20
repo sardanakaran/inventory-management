@@ -17,14 +17,11 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
-
 /**
  * @author karan
  *
  */
 @Entity
-@Data
 public class FileInfo {
 
 	@Id
@@ -84,5 +81,15 @@ public class FileInfo {
 	public void setUploadedBy(String uploadedBy) {
 		this.uploadedBy = uploadedBy;
 	}
+
+	public Tender getTender() {
+		return tender;
+	}
+
+	public void setTender(Tender tender) {
+		this.tender = tender;
+	}
+	
+	
 
 }

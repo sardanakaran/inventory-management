@@ -18,15 +18,12 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
-
 /**
  * @author Karan
  *
  */
 
 @Entity
-@Data
 public class DataInspection {
 
 	@Id
@@ -47,6 +44,30 @@ public class DataInspection {
 			files = new ArrayList<>();
 		files.add(info);
 		return this;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public BOQItem getBoqItem() {
+		return boqItem;
+	}
+
+	public void setBoqItem(BOQItem boqItem) {
+		this.boqItem = boqItem;
+	}
+
+	public List<FileInfo> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<FileInfo> files) {
+		this.files = files;
 	}
 
 }

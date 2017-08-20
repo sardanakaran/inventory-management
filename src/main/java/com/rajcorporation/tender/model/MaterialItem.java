@@ -11,10 +11,7 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
-
 @Entity
-@Data
 public class MaterialItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,4 +43,17 @@ public class MaterialItem {
 	public void setUnits(String units) {
 		this.units = units;
 	}
+
+	public BOQItem getBoqItem() {
+		return boqItem;
+	}
+
+	public void setBoqItem(BOQItem boqItem) {
+		this.boqItem = boqItem;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 }

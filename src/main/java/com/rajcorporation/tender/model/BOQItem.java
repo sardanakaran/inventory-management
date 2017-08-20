@@ -17,10 +17,7 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Data;
-
 @Entity
-@Data
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class BOQItem {
 	@Id
@@ -136,6 +133,42 @@ public class BOQItem {
 
 	public double getTotalErrectionCostWithTaxes() {
 		return quantity * (errectionCost + errectionCostWithTaxes);
+	}
+
+	public MaterialItem getItem() {
+		return item;
+	}
+
+	public void setItem(MaterialItem item) {
+		this.item = item;
+	}
+
+	public List<DataInspection> getDataInspection() {
+		return dataInspection;
+	}
+
+	public void setDataInspection(List<DataInspection> dataInspection) {
+		this.dataInspection = dataInspection;
+	}
+
+	public BOQ getBoq() {
+		return boq;
+	}
+
+	public void setBoq(BOQ boq) {
+		this.boq = boq;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setPerUnitSupplyCost(double perUnitSupplyCost) {
+		this.perUnitSupplyCost = perUnitSupplyCost;
+	}
+
+	public void setTotalSupplyCost(double totalSupplyCost) {
+		this.totalSupplyCost = totalSupplyCost;
 	}
 
 }

@@ -22,10 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rajcorporation.tender.validator.SaveGroup;
 import com.rajcorporation.tender.validator.UpdateGroup;
 
-import lombok.Data;
-
 @Entity
-@Data
 @JsonIgnoreProperties(value = "files", allowGetters = true, allowSetters = false)
 public class Tender {
 	@Id
@@ -33,6 +30,18 @@ public class Tender {
 	@NotEmpty(groups = { UpdateGroup.class })
 	@Column(name = "tender_id")
 	private Long id;
+
+	public BOQ getBoq() {
+		return boq;
+	}
+
+	public void setBoq(BOQ boq) {
+		this.boq = boq;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	private String districtName;
 
