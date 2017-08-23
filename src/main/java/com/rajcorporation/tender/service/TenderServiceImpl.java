@@ -110,41 +110,41 @@ public class TenderServiceImpl implements TenderService {
 		return storage.loadAsResource(fileInfo.getPath());
 	}
 
-	@Override
-	@Transactional
-	public Tender addBOQItems(Long tenderId, List<BOQItem> boqItems) {
-		Tender tender = findTender(tenderId);
-		if (tender == null)
-			throw new RuntimeException("Tender not found");
+//	@Override
+//	@Transactional
+//	public Tender addBOQItems(Long tenderId, List<BOQItem> boqItems) {
+//		Tender tender = findTender(tenderId);
+//		if (tender == null)
+//			throw new RuntimeException("Tender not found");
+//
+//		BOQ boq = tender.getBoq();
+//		if (boq == null) {
+//			boq = new BOQ();
+//			tender.setBoq(boq);
+//		}
+//
+//		boqItems.forEach(itm -> itm.getMaterialItem().setBoqItem(itm));
+//
+//		boq.withItems(boqItems);
+//
+//		return tender;
+//	}
 
-		BOQ boq = tender.getBoq();
-		if (boq == null) {
-			boq = new BOQ();
-			tender.setBoq(boq);
-		}
-
-		boqItems.forEach(itm -> itm.getMaterialItem().setBoqItem(itm));
-
-		boq.withItems(boqItems);
-
-		return tender;
-	}
-
-	@Override
-	@Transactional
-	public Tender addDataInspection(Long tenderId, Long boqId, DataInspection dataInspection) {
-		Tender tender = findTender(tenderId);
-		if (tender == null)
-			throw new RuntimeException("Tender not found");
-
-		BOQItem boqItem = boqRepository.findOne(boqId);
-		if (boqItem == null)
-			throw new RuntimeException("Item not found");
-
-		boqItem.addDataInspection(dataInspection);
-
-		return tender;
-	}
+//	@Override
+//	@Transactional
+//	public Tender addDataInspection(Long tenderId, Long boqId, DataInspection dataInspection) {
+//		Tender tender = findTender(tenderId);
+//		if (tender == null)
+//			throw new RuntimeException("Tender not found");
+//
+//		BOQItem boqItem = boqRepository.findOne(boqId);
+//		if (boqItem == null)
+//			throw new RuntimeException("Item not found");
+//
+//		boqItem.addDataInspection(dataInspection);
+//
+//		return tender;
+//	}
 
 	@Override
 	@Transactional

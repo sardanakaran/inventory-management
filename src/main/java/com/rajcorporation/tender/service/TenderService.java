@@ -32,9 +32,9 @@ public interface TenderService {
 
 	public Resource getFile(Long fileId);
 
-	public Tender addBOQItems(Long tenderId, List<BOQItem> boqItems);
+	// Tender addBOQItems(Long tenderId, List<BOQItem> boqItems);
 
-	public Tender addDataInspection(Long tenderId, Long boqId, DataInspection dataInspection);
+	//public Tender addDataInspection(Long tenderId, Long boqId, DataInspection dataInspection);
 
 	public Tender linkFile(Long tenderId, Long boqId, Long dataInspectionId, Long fileId);
 

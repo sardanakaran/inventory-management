@@ -5,10 +5,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.rajcorporation.tender.model.BOQItem;
 import com.rajcorporation.tender.model.MaterialItem;
 
 @Component
-public class MaterialValidator implements Validator {
+public class BOQValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -17,12 +18,9 @@ public class MaterialValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		MaterialItem item = (MaterialItem) target;
-		if (StringUtils.isEmpty(item.getItemDescription())) {
-			errors.rejectValue("itemDescription", "itemDescription.not.specified");
-			if (StringUtils.isEmpty(item.getUnits())) {
-				errors.rejectValue("unit", "unit.not.specified");
-			}
+		BOQItem item = (BOQItem) target;
+		if (StringUtils.isEmpty(item.getTenderId())) {
+			errors.rejectValue("tenderId", "tenderId.not.specified");
 		}
 	}
 }

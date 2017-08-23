@@ -22,26 +22,29 @@ public class BOQ {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
+	
+	Long tenderId;
+	int boqVersion;
 
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "boq")
-	List<BOQItem> itemsList = new ArrayList<>();
+//	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "boqitem")
+//	List<BOQItem> itemsList = new ArrayList<>();
 
-	public BOQ withItem(BOQItem item) {
-		if (itemsList.add(item))
-			item.setBoq(this);
-		return this;
-	}
-
-	public BOQ withItems(List<BOQItem> items) {
-		items.forEach(item -> withItem(item));
-		return this;
-	}
-
-	public BOQ removeItem(BOQItem item) {
-		if (itemsList.remove(item)) {
-			item.setBoq(null);
-		}
-		return this;
-	}
+//	public BOQ withItem(BOQItem item) {
+//		if (itemsList.add(item))
+//			item.setBoq(this);
+//		return this;
+//	}
+//
+//	public BOQ withItems(List<BOQItem> items) {
+//		items.forEach(item -> withItem(item));
+//		return this;
+//	}
+//
+//	public BOQ removeItem(BOQItem item) {
+//		if (itemsList.remove(item)) {
+//			item.setBoq(null);
+//		}
+//		return this;
+//	}
 
 }
