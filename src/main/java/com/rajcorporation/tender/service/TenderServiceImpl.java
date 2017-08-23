@@ -4,7 +4,6 @@
 package com.rajcorporation.tender.service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import javax.transaction.Transactional;
@@ -17,12 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rajcorporation.tender.exception.TenderDoesNotExistException;
-import com.rajcorporation.tender.model.BOQ;
-import com.rajcorporation.tender.model.BOQItem;
 import com.rajcorporation.tender.model.DataInspection;
 import com.rajcorporation.tender.model.FileInfo;
 import com.rajcorporation.tender.model.Tender;
-import com.rajcorporation.tender.repository.BOQRepository;
 import com.rajcorporation.tender.repository.DataInspectionRepository;
 import com.rajcorporation.tender.repository.FileInfoRepository;
 import com.rajcorporation.tender.repository.TenderRepository;
@@ -36,9 +32,6 @@ public class TenderServiceImpl implements TenderService {
 
 	@Autowired
 	TenderRepository repository;
-
-	@Autowired
-	BOQRepository boqRepository;
 
 	@Autowired
 	FileInfoRepository fileRepository;

@@ -1,8 +1,5 @@
 package com.rajcorporation.tender.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,11 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -31,7 +25,7 @@ public class BOQItem {
 	MaterialItem item;
 
 	Long tenderId;
-	int tenderVersion;
+	int boqVersion;
 	String procuredBy;
 	Long quantity;
 	double supplyExWorksPrice;
@@ -75,12 +69,12 @@ public class BOQItem {
 		this.item = item;
 	}
 
-	public int getTenderVersion() {
-		return tenderVersion;
+	public int getBoqVersion() {
+		return boqVersion;
 	}
 
-	public void setTenderVersion(int tenderVersion) {
-		this.tenderVersion = tenderVersion;
+	public void setBoqVersion(int boqVersion) {
+		this.boqVersion = boqVersion;
 	}
 
 	public String getProcuredBy() {

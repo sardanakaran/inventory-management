@@ -31,13 +31,13 @@ public class Tender {
 	@Column(name = "tender_id")
 	private Long id;
 
-	public BOQ getBoq() {
-		return boq;
-	}
-
-	public void setBoq(BOQ boq) {
-		this.boq = boq;
-	}
+//	public BOQ getBoq() {
+//		return boq;
+//	}
+//
+//	public void setBoq(BOQ boq) {
+//		this.boq = boq;
+//	}
 
 	public void setId(Long id) {
 		this.id = id;
@@ -54,9 +54,9 @@ public class Tender {
 	@JsonIgnore
 	private List<FileInfo> files = new ArrayList<>();
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "boq_id")
-	private BOQ boq;
+//	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	@JoinColumn(name = "boq_id")
+//	private BOQ boq;
 
 	@JsonProperty
 	public List<FileInfo> getFiles() {

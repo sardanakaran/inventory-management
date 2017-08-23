@@ -6,14 +6,13 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.rajcorporation.tender.model.BOQItem;
-import com.rajcorporation.tender.model.MaterialItem;
 
 @Component
 public class BOQValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return MaterialItem.class.isAssignableFrom(clazz);
+		return BOQItem.class.isAssignableFrom(clazz);
 	}
 
 	@Override

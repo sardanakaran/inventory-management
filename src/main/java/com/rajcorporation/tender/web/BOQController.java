@@ -47,21 +47,21 @@ public class BOQController {
 	}
 
 	
-	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BOQItem> findItem(@RequestParam(required = false) Long id) {
-
-		BOQItem item = service.findBOQItem(id);
-			return ResponseEntity.ok(item);
-	}
+//	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<BOQItem> findItem(@RequestParam(required = false) Long id) {
+//
+//		BOQItem item = service.findBOQItem(id);
+//			return ResponseEntity.ok(item);
+//	}
 	
-	/*@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BOQ> findAll(@RequestParam(required = true) Long tenderId, @RequestParam(required = true) int tenderVersion){
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<BOQ> getBoq(@RequestParam(required = true) Long tenderId, @RequestParam(required = true) int boqVersion){
 
-		List<BOQItem> item = service.findAll(tenderId, tenderVersion);
+		List<BOQItem> item = service.findAll(tenderId, boqVersion);
 		BOQ boq = new BOQ();
 		boq.setTenderId(tenderId);
-		boq.setVersion(tenderVersion);
+		boq.setBoqVersion(boqVersion);
 		boq.setItemsList(item);
 		return ResponseEntity.ok(boq);
-	}*/
+	}
 }
