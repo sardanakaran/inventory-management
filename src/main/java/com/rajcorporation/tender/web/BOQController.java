@@ -1,6 +1,11 @@
 package com.rajcorporation.tender.web;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -8,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,14 +53,14 @@ public class BOQController {
 	}
 
 	
-//	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<BOQItem> findItem(@RequestParam(required = false) Long id) {
-//
-//		BOQItem item = service.findBOQItem(id);
-//			return ResponseEntity.ok(item);
-//	}
-	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<BOQItem> findBoqItem(@RequestParam(required = false) Long id) {
+
+		BOQItem item = service.findBOQItem(id);
+			return ResponseEntity.ok(item);
+	}
+	
+	@GetMapping("/getBoq")
 	public ResponseEntity<BOQ> getBoq(@RequestParam(required = true) Long tenderId, @RequestParam(required = true) int boqVersion){
 
 		List<BOQItem> item = service.findAll(tenderId, boqVersion);
@@ -62,6 +68,36 @@ public class BOQController {
 		boq.setTenderId(tenderId);
 		boq.setBoqVersion(boqVersion);
 		boq.setItemsList(item);
+		return ResponseEntity.ok(boq);
+	}
+	
+	@GetMapping("/getLatestBoq")
+	public ResponseEntity<BOQ> getBoq(@RequestParam(required = true) Long tenderId) {
+
+		List<BOQItem> items = service.find(tenderId);
+
+		Map<Integer, List<BOQItem>> itemslistGrouped = new HashMap<Integer, List<BOQItem>>();
+		int latestBoqVersion = 0;
+		for (BOQItem student : items) {
+			int key = student.getBoqVersion();
+			if (itemslistGrouped.containsKey(key)) {
+				List<BOQItem> list = itemslistGrouped.get(key);
+				list.add(student);
+
+			} else {
+				List<BOQItem> list = new ArrayList<BOQItem>();
+				list.add(student);
+				itemslistGrouped.put(key, list);
+			}
+			if (key > latestBoqVersion) {
+				latestBoqVersion = key;
+			}
+		}
+
+		BOQ boq = new BOQ();
+		boq.setTenderId(tenderId);
+		boq.setBoqVersion(latestBoqVersion);
+		boq.setItemsList(itemslistGrouped.get(latestBoqVersion));
 		return ResponseEntity.ok(boq);
 	}
 }

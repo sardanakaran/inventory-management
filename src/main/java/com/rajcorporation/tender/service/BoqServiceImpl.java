@@ -33,7 +33,12 @@ public class BoqServiceImpl implements BoqService {
 
 	@Override
 	public List<BOQItem> findAll(Long tenderId, int boqVersion) {
-		return repository.GetAllBOQItems(tenderId, boqVersion);
+		return repository.findByTenderIdAndBoqVersion(tenderId, boqVersion);
+	}
+	
+	@Override
+	public List<BOQItem> find(Long tenderId) {
+		return repository.findByTenderId(tenderId);
 	}
 
 }

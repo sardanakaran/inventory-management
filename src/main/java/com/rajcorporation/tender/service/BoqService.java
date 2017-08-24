@@ -10,5 +10,6 @@ public interface BoqService {
 
 	public BOQItem findBOQItem(Long id);
 
+	List<BOQItem> find(Long tenderId);
 	public List<BOQItem> findAll(Long tenderId, int boqVersion);
 }

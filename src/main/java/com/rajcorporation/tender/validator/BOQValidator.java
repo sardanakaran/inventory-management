@@ -6,6 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.rajcorporation.tender.model.BOQItem;
+import com.rajcorporation.tender.model.MaterialItem;
 
 @Component
 public class BOQValidator implements Validator {

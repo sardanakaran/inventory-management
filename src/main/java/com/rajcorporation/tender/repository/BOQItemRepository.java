@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 import com.rajcorporation.tender.model.BOQItem;
 
 public interface BOQItemRepository extends PagingAndSortingRepository<BOQItem, Long> {
-    @Query(value = "FROM BOQItem WHERE tender_id = :tenderId AND boq_version = :version")
-    List<BOQItem> GetAllBOQItems(@Param("tenderId") Long tenderId, @Param("version") int version);
+    List<BOQItem> findByTenderIdAndBoqVersion(Long tenderId, int boqVersion);
+    List<BOQItem> findByTenderId(Long tenderId);
 }
