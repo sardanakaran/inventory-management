@@ -1,5 +1,7 @@
 package com.rajcorporation.tender.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +32,10 @@ public class MaterialManagerServiceImpl implements MaterialManagerService {
 	@Override
 	public Page<MaterialItem> findAll(Pageable pageable) {
 		return repository.findAll(pageable);
+	}
+	
+	@Override
+	public Iterable<MaterialItem> findAll() {
+		return repository.findAll();
 	}
 }

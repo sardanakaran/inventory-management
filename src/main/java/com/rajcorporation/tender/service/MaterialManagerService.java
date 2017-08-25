@@ -13,4 +13,6 @@ public interface MaterialManagerService {
 
 	public Page<MaterialItem> findAll(Pageable pageable);
 
+	public Iterable<MaterialItem> findAll();
+
 }
