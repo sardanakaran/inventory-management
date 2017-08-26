@@ -1,6 +1,7 @@
 package com.rajcorporation.tender.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -31,19 +32,16 @@ public class Tender {
 	@Column(name = "tender_id")
 	private Long id;
 
-//	public BOQ getBoq() {
-//		return boq;
-//	}
-//
-//	public void setBoq(BOQ boq) {
-//		this.boq = boq;
-//	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
+	private String teanderName;
+	private String description;
+	private String status;
 	private String districtName;
+	private Date startDate;
+	private Date endDate;
 
 	@NotEmpty(groups = { SaveGroup.class, UpdateGroup.class })
 	private String work;
@@ -53,10 +51,6 @@ public class Tender {
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "tender")
 	@JsonIgnore
 	private List<FileInfo> files = new ArrayList<>();
-
-//	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//	@JoinColumn(name = "boq_id")
-//	private BOQ boq;
 
 	@JsonProperty
 	public List<FileInfo> getFiles() {
@@ -102,4 +96,43 @@ public class Tender {
 		this.letterOfInterest = letterOfInterest;
 	}
 
+	public String getTeanderName() {
+		return teanderName;
+	}
+
+	public void setTeanderName(String teanderName) {
+		this.teanderName = teanderName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 }

@@ -36,6 +36,7 @@ public class FileInfo {
 	Date uploadedAt;
 
 	String uploadedBy;
+	String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tender_id")
@@ -89,7 +90,13 @@ public class FileInfo {
 	public void setTender(Tender tender) {
 		this.tender = tender;
 	}
-	
-	
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 }
