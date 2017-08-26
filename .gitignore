@@ -8,3 +8,6 @@ out
 /.gradle/
 /build/
 /bin/
+bin
+*.class
+build
