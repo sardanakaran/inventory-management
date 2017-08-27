@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -73,7 +74,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
                 .authorizeRequests()
-                .anyRequest().hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+                .antMatchers("/**/admin/**").hasRole("ADMIN")
+                .anyRequest().hasAnyRole("ADMIN","USER")
                 .and()
                 .formLogin()
                 .loginPage("/auth/login")
@@ -90,7 +95,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
 				"/swagger-ui.html", "/webjars/**", "/tender/**", "/material/**");
-		//web.ignoring().antMatchers("/**");
 	}
 
 }

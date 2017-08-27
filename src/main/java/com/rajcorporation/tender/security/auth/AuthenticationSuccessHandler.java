@@ -16,16 +16,15 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rajcorporation.tender.security.TokenHelper;
 import com.rajcorporation.tender.security.auth.model.User;
-import com.rajcorporation.tender.security.auth.model.UserTokenState;
 
 @Component
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${jwt.expires_in}")
-    private int EXPIRES_IN;
+	@Value("${jwt.expires_in}")
+	private int EXPIRES_IN;
 
-    @Value("${jwt.cookie}")
-    private String TOKEN_COOKIE;
+	@Value("${jwt.cookie}")
+	private String TOKEN_COOKIE;
 
 	@Autowired
 	TokenHelper tokenHelper;
@@ -35,26 +34,26 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication ) throws IOException, ServletException {
+			Authentication authentication) throws IOException, ServletException {
 		clearAuthenticationAttributes(request);
-		User user = (User)authentication.getPrincipal();
+		User user = (User) authentication.getPrincipal();
 
-		String jws = tokenHelper.generateToken( user.getUsername() );
+		String jws = tokenHelper.generateToken(user.getUsername());
 
-        // Create token auth Cookie
-        Cookie authCookie = new Cookie( TOKEN_COOKIE, ( jws ) );
-		authCookie.setPath( "/tender" );
-		authCookie.setHttpOnly( true );
-		
-		
-		authCookie.setMaxAge( EXPIRES_IN );
+		// Create token auth Cookie
+		Cookie authCookie = new Cookie(TOKEN_COOKIE, (jws));
+		authCookie.setPath("/tender");
+		authCookie.setHttpOnly(true);
+
+		authCookie.setMaxAge(EXPIRES_IN);
 		// Add cookie to response
-		response.addCookie( authCookie );
+		response.addCookie(authCookie);
 		// JWT is also in the response
-		UserTokenState userTokenState = new UserTokenState(jws, EXPIRES_IN);
-		String jwtResponse = objectMapper.writeValueAsString( userTokenState );
+		// UserTokenState userTokenState = new UserTokenState(jws, EXPIRES_IN);
+		// String jwtResponse = objectMapper.writeValueAsString( userTokenState
+		// );
 		response.setContentType("application/json");
-		response.getWriter().write( jwtResponse );
+		response.getWriter().write(objectMapper.writeValueAsString(user.getAuthorities()));
 
 	}
 }
