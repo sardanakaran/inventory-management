@@ -53,7 +53,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		// String jwtResponse = objectMapper.writeValueAsString( userTokenState
 		// );
 		response.setContentType("application/json");
-		response.getWriter().write(objectMapper.writeValueAsString(user.getAuthorities()));
+		response.getWriter().write(objectMapper.writeValueAsString(user));
 
 	}
 }

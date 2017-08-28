@@ -58,8 +58,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-
         String authToken = tokenHelper.getToken(request);
         if (authToken != null && !skipPathRequest(request, pathsToSkip)) {
             // get username from token
