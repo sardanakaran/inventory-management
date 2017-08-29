@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 
 @Entity
-public class DataInspection {
+public class DataInspection extends Changeable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

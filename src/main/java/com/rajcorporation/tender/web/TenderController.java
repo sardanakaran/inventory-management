@@ -75,8 +75,24 @@ public class TenderController {
 		if (actualTender == null) {
 			return ResponseEntity.badRequest().build();
 		}
-		return ResponseEntity.ok(service.save(tender));
 
+		Tender updated = compareAndSet(actualTender, tender);
+
+		return ResponseEntity.ok(service.save(updated));
+
+	}
+
+	private Tender compareAndSet(Tender actualTender, Tender tender) {
+		actualTender.setDescription(tender.getDescription());
+		actualTender.setEndDate(tender.getEndDate());
+		actualTender.setStartDate(tender.getStartDate());
+		actualTender.setStatus(tender.getStatus());
+		actualTender.setLetterOfInterest(tender.getLetterOfInterest());
+		actualTender.setTeanderName(tender.getTeanderName());
+		actualTender.setDistrictName(tender.getDistrictName());
+		actualTender.setWork(tender.getWork());
+
+		return actualTender;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

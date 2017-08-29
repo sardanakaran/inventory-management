@@ -30,10 +30,7 @@ import com.rajcorporation.tender.exception.StorageException;
 import com.rajcorporation.tender.exception.StorageFileNotFoundException;
 import com.rajcorporation.tender.repository.StorageProperties;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class FileSystemStorageService implements StorageService {
 
 	private final Path base;
@@ -125,7 +122,7 @@ public class FileSystemStorageService implements StorageService {
 
 			return !Files.exists(this.base.resolve(Paths.get(path)));
 		} catch (IOException e) {
-			//log.error("Couldn't delete the file", e);
+			// log.error("Couldn't delete the file", e);
 			return false;
 		}
 	}

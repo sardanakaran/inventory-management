@@ -6,23 +6,18 @@ package com.rajcorporation.tender.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author karan
  *
  */
 @Entity
-public class FileInfo {
+public class FileInfo extends Changeable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,10 +33,7 @@ public class FileInfo {
 	String uploadedBy;
 	String description;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tender_id")
-	@JsonIgnore
-	Tender tender;
+	Long tenderId;
 
 	public Long getId() {
 		return id;
@@ -83,14 +75,6 @@ public class FileInfo {
 		this.uploadedBy = uploadedBy;
 	}
 
-	public Tender getTender() {
-		return tender;
-	}
-
-	public void setTender(Tender tender) {
-		this.tender = tender;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -98,5 +82,13 @@ public class FileInfo {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	public Long getTenderId() {
+		return tenderId;
+	}
+
+	public void setTenderId(Long tenderId) {
+		this.tenderId = tenderId;
+	}
+
 }

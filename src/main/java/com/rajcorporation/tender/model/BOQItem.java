@@ -13,9 +13,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class BOQItem {
-	
-	
+public class BOQItem extends Changeable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
@@ -41,21 +40,22 @@ public class BOQItem {
 
 	public void setTenderId(Long tenderId) {
 		this.tenderId = tenderId;
-	}	
-	
-//	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "boqItem")
-//	List<DataInspection> dataInspection = new ArrayList<>();
-//
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "boq_id")
-//	@JsonIgnore
-//	BOQ boq;
-//
-//	public BOQItem addDataInspection(DataInspection inspection) {
-//		dataInspection.add(inspection);
-//		inspection.setBoqItem(this);
-//		return this;
-//	}
+	}
+
+	// @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy =
+	// "boqItem")
+	// List<DataInspection> dataInspection = new ArrayList<>();
+	//
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "boq_id")
+	// @JsonIgnore
+	// BOQ boq;
+	//
+	// public BOQItem addDataInspection(DataInspection inspection) {
+	// dataInspection.add(inspection);
+	// inspection.setBoqItem(this);
+	// return this;
+	// }
 
 	public Long getId() {
 		return id;
@@ -149,25 +149,25 @@ public class BOQItem {
 		this.item = item;
 	}
 
-//	public List<DataInspection> getDataInspection() {
-//		return dataInspection;
-//	}
-//
-//	public void setDataInspection(List<DataInspection> dataInspection) {
-//		this.dataInspection = dataInspection;
-//	}
-//
-//	public BOQ getBoq() {
-//		return boq;
-//	}
-//
-//	public void setBoq(BOQ boq) {
-//		this.boq = boq;
-//	}
+	// public List<DataInspection> getDataInspection() {
+	// return dataInspection;
+	// }
+	//
+	// public void setDataInspection(List<DataInspection> dataInspection) {
+	// this.dataInspection = dataInspection;
+	// }
+	//
+	// public BOQ getBoq() {
+	// return boq;
+	// }
+	//
+	// public void setBoq(BOQ boq) {
+	// this.boq = boq;
+	// }
 
-//	public void setId(Long id) {
-//		this.id = id;
-//	}
+	// public void setId(Long id) {
+	// this.id = id;
+	// }
 
 	public void setPerUnitSupplyCost(double perUnitSupplyCost) {
 		this.perUnitSupplyCost = perUnitSupplyCost;

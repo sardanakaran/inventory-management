@@ -1,28 +1,20 @@
 package com.rajcorporation.tender.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rajcorporation.tender.validator.SaveGroup;
 import com.rajcorporation.tender.validator.UpdateGroup;
 
 @Entity
-@JsonIgnoreProperties(value = "files", allowGetters = true, allowSetters = false)
-public class Tender {
+public class Tender extends Changeable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@NotEmpty(groups = { UpdateGroup.class })
@@ -32,7 +24,7 @@ public class Tender {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	private String teanderName;
 	private String description;
 	private String status;
@@ -45,32 +37,12 @@ public class Tender {
 
 	private String letterOfInterest;
 
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "tender")
-	@JsonIgnore
-	private List<FileInfo> files = new ArrayList<>();
-
-	@JsonProperty
-	public List<FileInfo> getFiles() {
-		return files;
-	}
-
-	@JsonIgnore
-	public void setFiles(List<FileInfo> files) {
-		this.files = files;
-	}
-
 	public Long getId() {
 		return id;
 	}
 
 	public String getDistrictName() {
 		return districtName;
-	}
-
-	public Tender withFile(FileInfo file) {
-		this.files.add(file);
-		file.setTender(this);
-		return this;
 	}
 
 	public void setDistrictName(String districtName) {

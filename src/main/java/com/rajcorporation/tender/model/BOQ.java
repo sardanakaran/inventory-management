@@ -3,13 +3,13 @@ package com.rajcorporation.tender.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BOQ {
+public class BOQ extends Changeable {
 
-	
 	Long tenderId;
 	int boqVersion;
 
 	List<BOQItem> itemsList = new ArrayList<>();
+
 	public Long getTenderId() {
 		return tenderId;
 	}
