@@ -43,7 +43,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		// Create token auth Cookie
 		Cookie authCookie = new Cookie(TOKEN_COOKIE, (jws));
 		authCookie.setPath("/tender");
-		//authCookie.setHttpOnly(true);
+		authCookie.setHttpOnly(true);
 
 		authCookie.setMaxAge(EXPIRES_IN);
 		// Add cookie to response
