@@ -25,7 +25,7 @@ public class Tender extends Changeable {
 		this.id = id;
 	}
 
-	private String teanderName;
+	private String tenderName;
 	private String description;
 	private String status;
 	private String districtName;
@@ -65,12 +65,12 @@ public class Tender extends Changeable {
 		this.letterOfInterest = letterOfInterest;
 	}
 
-	public String getTeanderName() {
-		return teanderName;
+	public String getTenderName() {
+		return tenderName;
 	}
 
-	public void setTeanderName(String teanderName) {
-		this.teanderName = teanderName;
+	public void setTenderName(String tenderName) {
+		this.tenderName = tenderName;
 	}
 
 	public String getDescription() {

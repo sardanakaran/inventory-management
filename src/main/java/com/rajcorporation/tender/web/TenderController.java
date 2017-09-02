@@ -88,7 +88,7 @@ public class TenderController {
 		actualTender.setStartDate(tender.getStartDate());
 		actualTender.setStatus(tender.getStatus());
 		actualTender.setLetterOfInterest(tender.getLetterOfInterest());
-		actualTender.setTeanderName(tender.getTeanderName());
+		actualTender.setTenderName(tender.getTenderName());
 		actualTender.setDistrictName(tender.getDistrictName());
 		actualTender.setWork(tender.getWork());
 
