@@ -3,11 +3,14 @@
  */
 package com.rajcorporation.tender.service;
 
+import java.util.List;
+
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.rajcorporation.tender.model.FileInfo;
 import com.rajcorporation.tender.model.Tender;
 
 /**
@@ -29,5 +32,7 @@ public interface TenderService {
 	public Resource getFile(Long fileId);
 
 	public Tender linkFile(Long tenderId, Long boqId, Long dataInspectionId, Long fileId);
+
+	public List<FileInfo> getFiles(Long tenderId);
 
 }

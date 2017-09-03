@@ -4,36 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.rajcorporation.tender.exception.ValidationException;
 import com.rajcorporation.tender.model.MaterialItem;
 import com.rajcorporation.tender.model.MaterialList;
-import com.rajcorporation.tender.model.Tender;
 import com.rajcorporation.tender.service.MaterialManagerService;
 import com.rajcorporation.tender.validator.MaterialValidator;
 import com.rajcorporation.tender.validator.SaveGroup;
-  
+
 @RestController
 @RequestMapping("/material")
 public class MaterialController {
 
 	@Autowired
 	MaterialValidator validator;
-	
+
 	@Autowired
 	MaterialManagerService service;
 
@@ -41,7 +37,7 @@ public class MaterialController {
 	public void dataBinding(WebDataBinder binder) {
 		binder.setValidator(validator);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<MaterialItem> createOrUpdateItem(@RequestBody @Validated(SaveGroup.class) MaterialItem item,
 			BindingResult bindingResult) {
@@ -52,19 +48,17 @@ public class MaterialController {
 
 	}
 
-	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<MaterialList> findItem(@RequestParam(required = false) Long id) {
 		MaterialList materialList = new MaterialList();
 		List<MaterialItem> materialItemList = new ArrayList<MaterialItem>();
 		materialList.setMaterials(materialItemList);
-		
-		if(id != null){
+
+		if (id != null) {
 			materialItemList.add(service.findItem(id));
-		}
-		else{
+		} else {
 			Iterable<MaterialItem> item = service.findAll();
-			item.forEach(it->materialItemList.add(it));
+			item.forEach(it -> materialItemList.add(it));
 		}
 		return ResponseEntity.ok(materialList);
 	}

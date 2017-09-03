@@ -35,7 +35,18 @@ public class CommonExceptionHandler {
 
 	@ExceptionHandler(value = Exception.class)
 	public ResponseEntity<ErrorInfo> handleException(Exception ex) {
-		return ResponseEntity.badRequest().body(new ErrorInfo().withError(ex.getMessage()));
+		Throwable throwable = extractTheRealCause(ex);
+
+		return ResponseEntity.badRequest().body(new ErrorInfo().withError(throwable.getMessage()));
+	}
+
+	private Throwable extractTheRealCause(Exception ex) {
+		Throwable throwable = ex;
+		Throwable toReturn = ex;
+		while ((throwable = throwable.getCause()) != null)
+			toReturn = throwable;
+
+		return toReturn;
 	}
 
 	@SuppressWarnings("rawtypes")

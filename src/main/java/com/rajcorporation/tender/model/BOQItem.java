@@ -1,5 +1,8 @@
 package com.rajcorporation.tender.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,9 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -17,13 +24,22 @@ public class BOQItem extends Changeable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonIgnore
 	Long id;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "material_item_id")
 	MaterialItem item;
 
-	Long tenderId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "boq_id")
+	@JsonIgnore
+	BOQ boq;
+
+	@OneToMany(mappedBy = "boqItem", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnore
+	List<DataInspection> dataInspection = new ArrayList<>();
+
 	int boqVersion;
 	String procuredBy;
 	Long quantity;
@@ -34,29 +50,7 @@ public class BOQItem extends Changeable {
 	double errectionCost;
 	double errectionCostWithTaxes;
 
-	public Long getTenderId() {
-		return tenderId;
-	}
-
-	public void setTenderId(Long tenderId) {
-		this.tenderId = tenderId;
-	}
-
-	// @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy =
-	// "boqItem")
-	// List<DataInspection> dataInspection = new ArrayList<>();
-	//
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "boq_id")
-	// @JsonIgnore
-	// BOQ boq;
-	//
-	// public BOQItem addDataInspection(DataInspection inspection) {
-	// dataInspection.add(inspection);
-	// inspection.setBoqItem(this);
-	// return this;
-	// }
-
+	@JsonProperty
 	public Long getId() {
 		return id;
 	}
@@ -149,25 +143,16 @@ public class BOQItem extends Changeable {
 		this.item = item;
 	}
 
-	// public List<DataInspection> getDataInspection() {
-	// return dataInspection;
-	// }
-	//
-	// public void setDataInspection(List<DataInspection> dataInspection) {
-	// this.dataInspection = dataInspection;
-	// }
-	//
-	// public BOQ getBoq() {
-	// return boq;
-	// }
-	//
-	// public void setBoq(BOQ boq) {
-	// this.boq = boq;
-	// }
+	public BOQItem withDataInspection(DataInspection inspection) {
+		inspection.setBoqItem(this);
+		dataInspection.add(inspection);
+		return this;
+	}
 
-	// public void setId(Long id) {
-	// this.id = id;
-	// }
+	public BOQItem withBOQ(BOQ boq) {
+		this.boq = boq;
+		return this;
+	}
 
 	public void setPerUnitSupplyCost(double perUnitSupplyCost) {
 		this.perUnitSupplyCost = perUnitSupplyCost;

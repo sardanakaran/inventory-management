@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Karan
@@ -24,10 +25,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 
 @Entity
-public class DataInspection extends Changeable{
+public class DataInspection extends Changeable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonIgnore
 	Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -46,18 +48,22 @@ public class DataInspection extends Changeable{
 		return this;
 	}
 
+	@JsonProperty
 	public Long getId() {
 		return id;
 	}
 
+	@JsonIgnore
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public BOQItem getBoqItem() {
 		return boqItem;
 	}
 
+	@JsonIgnore
 	public void setBoqItem(BOQItem boqItem) {
 		this.boqItem = boqItem;
 	}

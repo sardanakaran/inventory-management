@@ -2,14 +2,19 @@ package com.rajcorporation.tender.service;
 
 import java.util.List;
 
+import com.rajcorporation.tender.model.BOQ;
 import com.rajcorporation.tender.model.BOQItem;
 
 public interface BoqService {
 
-	public BOQItem save(BOQItem tender);
+	public BOQ save(BOQ boq);
 
-	public BOQItem findBOQItem(Long id);
+	public BOQ find(Long id);
 
-	List<BOQItem> find(Long tenderId);
-	public List<BOQItem> findAll(Long tenderId, int boqVersion);
+	List<BOQ> findByTenderId(Long tendId);
+
+	public BOQ freeze(Long id);
+
+	public BOQ addBoqItem(BOQItem item, Long boqId) throws BOQNotFoundException, BOQFinalizedException;
+
 }

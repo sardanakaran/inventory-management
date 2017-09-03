@@ -37,7 +37,15 @@ public abstract class Changeable {
 	}
 
 	private User getLoggedInUser() {
-		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null
+				&& SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null)
+			return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		else {
+			User user = new User();
+			user.setUsername("");
+			return user;
+
+		}
 	}
 
 	@PreUpdate

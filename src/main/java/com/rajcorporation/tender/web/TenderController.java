@@ -4,6 +4,7 @@
 package com.rajcorporation.tender.web;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rajcorporation.tender.exception.ValidationException;
+import com.rajcorporation.tender.model.FileInfo;
 import com.rajcorporation.tender.model.PaginationData;
 import com.rajcorporation.tender.model.Tender;
 import com.rajcorporation.tender.model.TenderList;
@@ -79,7 +81,6 @@ public class TenderController {
 		Tender updated = compareAndSet(actualTender, tender);
 
 		return ResponseEntity.ok(service.save(updated));
-
 	}
 
 	private Tender compareAndSet(Tender actualTender, Tender tender) {
@@ -134,6 +135,11 @@ public class TenderController {
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE).body(file);
+	}
+
+	@GetMapping("/files")
+	public ResponseEntity<List<FileInfo>> getFiles(@RequestParam(name = "tenderId") Long tenderId) {
+		return ResponseEntity.ok(service.getFiles(tenderId));
 	}
 
 	private <T> PaginationData getPaginationData(Page<T> pagedInformation) {

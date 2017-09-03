@@ -4,6 +4,7 @@
 package com.rajcorporation.tender.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.transaction.Transactional;
@@ -117,6 +118,11 @@ public class TenderServiceImpl implements TenderService {
 		dataInspection.withFile(fileInfo);
 
 		return tender;
+	}
+
+	@Override
+	public List<FileInfo> getFiles(Long tenderId) {
+		return fileRepository.findByTenderId(tenderId);
 	}
 
 }

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rajcorporation.tender.validator.SaveGroup;
 import com.rajcorporation.tender.validator.UpdateGroup;
 
@@ -19,15 +21,17 @@ public class Tender extends Changeable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@NotEmpty(groups = { UpdateGroup.class })
 	@Column(name = "tender_id")
+	@JsonIgnore
 	private Long id;
 
+	@JsonIgnore
 	public void setId(Long id) {
 		this.id = id;
 	}
 
 	private String tenderName;
 	private String description;
-	private String status;
+	private TenderStatus status = TenderStatus.OPEN;
 	private String districtName;
 	private Date startDate;
 	private Date endDate;
@@ -37,6 +41,7 @@ public class Tender extends Changeable {
 
 	private String letterOfInterest;
 
+	@JsonProperty
 	public Long getId() {
 		return id;
 	}
@@ -69,8 +74,8 @@ public class Tender extends Changeable {
 		return tenderName;
 	}
 
-	public void setTenderName(String tenderName) {
-		this.tenderName = tenderName;
+	public void setTenderName(String teanderName) {
+		this.tenderName = teanderName;
 	}
 
 	public String getDescription() {
@@ -81,11 +86,12 @@ public class Tender extends Changeable {
 		this.description = description;
 	}
 
-	public String getStatus() {
+	public TenderStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	@JsonIgnore
+	public void setStatus(TenderStatus status) {
 		this.status = status;
 	}
 
