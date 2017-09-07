@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class MaterialItem extends Changeable {
+public class MaterialItem extends Changeable implements Cloneable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonIgnore
@@ -43,4 +43,13 @@ public class MaterialItem extends Changeable {
 	public void setUnits(String units) {
 		this.units = units;
 	}
+
+	@Override
+	protected MaterialItem clone() {
+		MaterialItem clone = new MaterialItem();
+		clone.setItemDescription(itemDescription);
+		clone.setUnits(units);
+		return clone;
+	}
+
 }

@@ -16,4 +16,6 @@ public interface UserService {
 	public User addAuthority(Long id, Long authorityId);
 
 	User removeAuthority(Long id, Long authorityId);
+
+	public List<User> getUsers(Long id);
 }

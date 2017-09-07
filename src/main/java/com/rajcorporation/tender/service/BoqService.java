@@ -17,4 +17,6 @@ public interface BoqService {
 
 	public BOQ addBoqItem(BOQItem item, Long boqId) throws BOQNotFoundException, BOQFinalizedException;
 
+	public BOQ cloneBOQ(Long boqId) throws BOQNotFoundException;
+
 }

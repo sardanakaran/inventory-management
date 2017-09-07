@@ -56,4 +56,17 @@ public class BoqServiceImpl implements BoqService {
 			throw new BOQNotFoundException("BOQ not found!");
 	}
 
+	@Override
+	@Transactional
+	public BOQ cloneBOQ(Long boqId) throws BOQNotFoundException {
+		BOQ boq = boqRepository.findOne(boqId);
+		if (boq == null)
+			throw new BOQNotFoundException("BOQ not found!");
+		BOQ clone = boq.clone();
+
+		boqRepository.save(clone);
+
+		return clone;
+	}
+
 }

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class BOQ extends Changeable {
+public class BOQ extends Changeable implements Cloneable {
 
 	@Id
 	@JsonIgnore
@@ -70,6 +70,26 @@ public class BOQ extends Changeable {
 		item.withBOQ(this);
 		boqItems.add(item);
 		return this;
+	}
+
+	@Override
+	public BOQ clone() {
+		BOQ clone = new BOQ();
+		clone.setTenderId(tenderId);
+		clone.setBoqItems(cloneBOQItems(clone));
+		return clone;
+	}
+
+	private List<BOQItem> cloneBOQItems(BOQ boqClone) {
+		final List<BOQItem> clone = new ArrayList<>();
+		if (this.boqItems != null && !this.boqItems.isEmpty()) {
+			boqItems.forEach(item -> {
+				BOQItem itemClone = item.clone();
+				itemClone.withBOQ(boqClone);
+				clone.add(itemClone);
+			});
+		}
+		return clone;
 	}
 
 }

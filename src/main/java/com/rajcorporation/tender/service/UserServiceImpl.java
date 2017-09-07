@@ -1,5 +1,7 @@
 package com.rajcorporation.tender.service;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,6 +73,21 @@ public class UserServiceImpl implements UserService {
 		if (!Objects.isNull(user.getAuthorities()))
 			user.getAuthorities().remove(authority);
 		return user;
+	}
+
+	@Override
+	@PreAuthorize("hasRole('ADMIN')")
+	public List<User> getUsers(Long id) {
+		if (id == null)
+			return userRepository.findAll();
+		else {
+			User user = userRepository.findOne(id);
+			if (user != null)
+				return Arrays.asList(user);
+			else
+				return Collections.emptyList();
+		}
+
 	}
 
 }

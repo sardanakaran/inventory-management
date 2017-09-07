@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class BOQItem extends Changeable {
+public class BOQItem extends Changeable implements Cloneable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -160,6 +160,23 @@ public class BOQItem extends Changeable {
 
 	public void setTotalSupplyCost(double totalSupplyCost) {
 		this.totalSupplyCost = totalSupplyCost;
+	}
+
+	@Override
+	protected BOQItem clone() {
+		BOQItem clone = new BOQItem();
+		if (item != null)
+			clone.setItem(item.clone());
+
+		clone.setErrectionCost(errectionCost);
+		clone.setProcuredBy(procuredBy);
+		clone.setQuantity(quantity);
+		clone.setSupplyExWorksPrice(supplyExWorksPrice);
+		clone.setSupplyTaxes(supplyTaxes);
+		clone.setErrectionCostWithTaxes(errectionCostWithTaxes);
+		clone.setTotalSupplyCost(totalSupplyCost);
+
+		return clone;
 	}
 
 }

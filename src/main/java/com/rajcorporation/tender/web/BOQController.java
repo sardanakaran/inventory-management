@@ -102,6 +102,12 @@ public class BOQController {
 
 	}
 
+	@PostMapping("/cloneBOQ")
+	public ResponseEntity<BOQ> cloneBOQ(@RequestParam(required = true) Long boqId) throws BOQNotFoundException {
+		BOQ boq = service.cloneBOQ(boqId);
+		return ResponseEntity.ok(boq);
+	}
+
 	@GetMapping("/latestBOQ")
 	public ResponseEntity<BOQ> getLatestBoq(@RequestParam(required = true) Long tenderId) {
 		List<BOQ> boqZ = service.findByTenderId(tenderId);
