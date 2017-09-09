@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.rajcorporation.tender.exception.ValidationException;
 import com.rajcorporation.tender.model.FileInfo;
+import com.rajcorporation.tender.model.FileList;
 import com.rajcorporation.tender.model.PaginationData;
 import com.rajcorporation.tender.model.Tender;
 import com.rajcorporation.tender.model.TenderList;
@@ -138,8 +139,10 @@ public class TenderController {
 	}
 
 	@GetMapping("/files")
-	public ResponseEntity<List<FileInfo>> getFiles(@RequestParam(name = "tenderId") Long tenderId) {
-		return ResponseEntity.ok(service.getFiles(tenderId));
+	public ResponseEntity<FileList> getFiles(@RequestParam(name = "tenderId") Long tenderId) {
+		FileList fileList = new FileList();
+		fileList.setFiles(service.getFiles(tenderId));
+		return ResponseEntity.ok(fileList);
 	}
 
 	private <T> PaginationData getPaginationData(Page<T> pagedInformation) {
