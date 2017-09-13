@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,56 +29,56 @@ public class BOQItem extends Changeable implements Cloneable {
 	@JsonIgnore
 	Long id;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "material_item_id")
-	MaterialItem item;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "boq_id")
 	@JsonIgnore
 	BOQ boq;
 
 	@OneToMany(mappedBy = "boqItem", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonIgnore
 	List<DataInspection> dataInspection = new ArrayList<>();
 
-	int boqVersion;
-	String procuredBy;
-	Long quantity;
-	double supplyExWorksPrice;
-	double supplyTaxes;
-	double perUnitSupplyCost;
-	double totalSupplyCost;
-	double errectionCost;
-	double errectionCostWithTaxes;
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "material_item_id")
+	MaterialItem item; // columns 2 & 4; UI needed? YES
+	Long quantity; // column 3; UI needed? YES
+	double supplyExWorksPrice; // column 5; UI needed? YES
+
+	@JsonIgnore
+	double totalExWorksAmt; // Column 6; UI needed? NO. Auto-Calculated
+							// [supplyExWorksPrice X quantity]
+	double freightInsuranceAndCartageAmtPerUnit; // Column 7; UI needed? YES
+
+	@JsonIgnore
+	double totalFreightInsuranceAndCartageAmt; // Column 8; UI needed? NO Need
+												// not be supplied by the UI
+												// [freightInsuranceAndCartageAmt
+												// X quantity]
+	double erectionCostWithTaxesPerUnit;// Column 9; UI needed? YES
+
+	@JsonIgnore
+	double totalErectionCostWithTaxes;// Column 10; UI needed? NO.
+										// Auto-calculated
+										// [erectionCostWithTaxesPerUnit X
+										// quantity]
+
+	@JsonIgnore
+	double totalAmtPerUnit; // Column 11; UI needed? NO. Auto-calculated
+							// [supplyExWorksPrice +
+							// freightInsuranceAndCartageAmtPerUnit+
+							// erectionCostWithTaxesPerUnit+taxesAndDutyPerUnit]
+	double taxesAndDutyPerUnit; // Column 12; UI needed? YES
+
+	@JsonIgnore
+	double totalTaxesAndDuty; // Column 13; UI needed? NO. Auto-calculated
+								// [taxesAndDutyPerUnit X quantity]
+
+	@JsonIgnore
+	double totalAmount; // Column 14; UI needed? NO. Auto-calculated
+						// [totalAmtPerUnit X quantity]
 
 	@JsonProperty
 	public Long getId() {
 		return id;
-	}
-
-	public MaterialItem getMaterialItem() {
-		return item;
-	}
-
-	public void setMaterialItem(MaterialItem item) {
-		this.item = item;
-	}
-
-	public int getBoqVersion() {
-		return boqVersion;
-	}
-
-	public void setBoqVersion(int boqVersion) {
-		this.boqVersion = boqVersion;
-	}
-
-	public String getProcuredBy() {
-		return procuredBy;
-	}
-
-	public void setProcuredBy(String procuredBy) {
-		this.procuredBy = procuredBy;
 	}
 
 	public Long getQuantity() {
@@ -93,46 +95,6 @@ public class BOQItem extends Changeable implements Cloneable {
 
 	public void setSupplyExWorksPrice(double supplyExWorksPrice) {
 		this.supplyExWorksPrice = supplyExWorksPrice;
-	}
-
-	public double getSupplyTaxes() {
-		return supplyTaxes;
-	}
-
-	public void setSupplyTaxes(double supplyTaxes) {
-		this.supplyTaxes = supplyTaxes;
-	}
-
-	public double getPerUnitSupplyCost() {
-		return supplyExWorksPrice + supplyTaxes;
-	}
-
-	public double getTotalSupplyCost() {
-		return quantity * (supplyExWorksPrice + supplyTaxes);
-	}
-
-	public double getErrectionCost() {
-		return errectionCost;
-	}
-
-	public void setErrectionCost(double errectionCost) {
-		this.errectionCost = errectionCost;
-	}
-
-	public double getErrectionCostWithTaxes() {
-		return errectionCostWithTaxes;
-	}
-
-	public void setErrectionCostWithTaxes(double errectionCostWithTaxes) {
-		this.errectionCostWithTaxes = errectionCostWithTaxes;
-	}
-
-	public double getPerUnitErrectionCostWithTaxes() {
-		return errectionCost + errectionCostWithTaxes;
-	}
-
-	public double getTotalErrectionCostWithTaxes() {
-		return quantity * (errectionCost + errectionCostWithTaxes);
 	}
 
 	public MaterialItem getItem() {
@@ -154,12 +116,80 @@ public class BOQItem extends Changeable implements Cloneable {
 		return this;
 	}
 
-	public void setPerUnitSupplyCost(double perUnitSupplyCost) {
-		this.perUnitSupplyCost = perUnitSupplyCost;
+	public List<DataInspection> getDataInspection() {
+		return dataInspection;
 	}
 
-	public void setTotalSupplyCost(double totalSupplyCost) {
-		this.totalSupplyCost = totalSupplyCost;
+	public void setDataInspection(List<DataInspection> dataInspection) {
+		this.dataInspection = dataInspection;
+	}
+
+	@JsonProperty
+	public double getTotalExWorksAmt() {
+		return totalExWorksAmt = supplyExWorksPrice * quantity;
+	}
+
+	public double getFreightInsuranceAndCartageAmtPerUnit() {
+		return freightInsuranceAndCartageAmtPerUnit;
+	}
+
+	public void setFreightInsuranceAndCartageAmtPerUnit(double freightInsuranceAndCartageAmtPerUnit) {
+		this.freightInsuranceAndCartageAmtPerUnit = freightInsuranceAndCartageAmtPerUnit;
+	}
+
+	@JsonProperty
+	public double getTotalFreightInsuranceAndCartageAmt() {
+		return totalFreightInsuranceAndCartageAmt = freightInsuranceAndCartageAmtPerUnit * quantity;
+	}
+
+	public double getErectionCostWithTaxesPerUnit() {
+		return erectionCostWithTaxesPerUnit;
+	}
+
+	public void setErectionCostWithTaxesPerUnit(double erectionCostWithTaxesPerUnit) {
+		this.erectionCostWithTaxesPerUnit = erectionCostWithTaxesPerUnit;
+	}
+
+	@JsonProperty
+	public double getTotalErectionCostWithTaxes() {
+		return totalErectionCostWithTaxes = erectionCostWithTaxesPerUnit * quantity;
+	}
+
+	@JsonProperty
+	public double getTotalAmtPerUnit() {
+		return totalAmtPerUnit = (supplyExWorksPrice + freightInsuranceAndCartageAmtPerUnit
+				+ erectionCostWithTaxesPerUnit + taxesAndDutyPerUnit);
+	}
+
+	public double getTaxesAndDutyPerUnit() {
+		return taxesAndDutyPerUnit;
+	}
+
+	public void setTaxesAndDutyPerUnit(double taxesAndDutyPerUnit) {
+		this.taxesAndDutyPerUnit = taxesAndDutyPerUnit;
+	}
+
+	@JsonProperty
+	public double getTotalTaxesAndDuty() {
+		return totalTaxesAndDuty = taxesAndDutyPerUnit * quantity;
+	}
+
+	@JsonProperty
+	public double getTotalAmount() {
+		return totalAmount = getTotalAmtPerUnit() * quantity;
+	}
+
+	@PrePersist
+	@PreUpdate
+	public void setAllTotals() {
+		// Getters are essentially setters for us; however, we'll revisit this
+		// one day to save some stack calls[pointless pretty much]
+		getTotalAmount();
+		getTotalAmtPerUnit();
+		getTotalErectionCostWithTaxes();
+		getTotalExWorksAmt();
+		getTotalFreightInsuranceAndCartageAmt();
+		getTotalTaxesAndDuty();
 	}
 
 	@Override
@@ -168,13 +198,11 @@ public class BOQItem extends Changeable implements Cloneable {
 		if (item != null)
 			clone.setItem(item.clone());
 
-		clone.setErrectionCost(errectionCost);
-		clone.setProcuredBy(procuredBy);
 		clone.setQuantity(quantity);
 		clone.setSupplyExWorksPrice(supplyExWorksPrice);
-		clone.setSupplyTaxes(supplyTaxes);
-		clone.setErrectionCostWithTaxes(errectionCostWithTaxes);
-		clone.setTotalSupplyCost(totalSupplyCost);
+		clone.setErectionCostWithTaxesPerUnit(erectionCostWithTaxesPerUnit);
+		clone.setTaxesAndDutyPerUnit(taxesAndDutyPerUnit);
+		clone.setFreightInsuranceAndCartageAmtPerUnit(freightInsuranceAndCartageAmtPerUnit);
 
 		return clone;
 	}

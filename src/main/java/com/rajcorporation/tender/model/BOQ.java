@@ -25,7 +25,6 @@ public class BOQ extends Changeable implements Cloneable {
 	Long tenderId;
 
 	@OneToMany(mappedBy = "boq", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonIgnore
 	List<BOQItem> boqItems = new ArrayList<BOQItem>();
 
 	Status status = Status.OPEN;
@@ -51,13 +50,14 @@ public class BOQ extends Changeable implements Cloneable {
 		return id;
 	}
 
-	@JsonIgnore
 	public List<BOQItem> getBoqItems() {
 		return boqItems;
 	}
 
-	@JsonIgnore
 	public void setBoqItems(List<BOQItem> boqItems) {
+		for (BOQItem boqItem : boqItems) {
+			boqItem.withBOQ(this);
+		}
 		this.boqItems = boqItems;
 	}
 
