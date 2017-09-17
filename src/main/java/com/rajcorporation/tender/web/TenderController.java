@@ -4,7 +4,6 @@
 package com.rajcorporation.tender.web;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -29,11 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rajcorporation.tender.exception.ValidationException;
-import com.rajcorporation.tender.model.FileInfo;
 import com.rajcorporation.tender.model.FileList;
 import com.rajcorporation.tender.model.PaginationData;
 import com.rajcorporation.tender.model.Tender;
 import com.rajcorporation.tender.model.TenderList;
+import com.rajcorporation.tender.model.TenderStatus;
 import com.rajcorporation.tender.service.TenderService;
 import com.rajcorporation.tender.validator.SaveGroup;
 import com.rajcorporation.tender.validator.TenderValidator;
@@ -82,6 +81,18 @@ public class TenderController {
 		Tender updated = compareAndSet(actualTender, tender);
 
 		return ResponseEntity.ok(service.save(updated));
+	}
+
+	@RequestMapping(path = "/admin/updateStatus", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Tender> closeTender(@RequestParam Long tenderId, @RequestParam TenderStatus status) {
+		Tender actualTender = service.findTender(tenderId);
+		if (actualTender == null) {
+			return ResponseEntity.badRequest().build();
+		}
+
+		actualTender.setStatus(status);
+
+		return ResponseEntity.ok(service.save(actualTender));
 	}
 
 	private Tender compareAndSet(Tender actualTender, Tender tender) {

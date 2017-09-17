@@ -31,6 +31,8 @@ public class Tender extends Changeable {
 
 	private String tenderName;
 	private String description;
+
+	@JsonIgnore
 	private TenderStatus status = TenderStatus.OPEN;
 	private String districtName;
 	private Date startDate;
@@ -86,6 +88,7 @@ public class Tender extends Changeable {
 		this.description = description;
 	}
 
+	@JsonProperty
 	public TenderStatus getStatus() {
 		return status;
 	}
