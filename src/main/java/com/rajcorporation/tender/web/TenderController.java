@@ -33,6 +33,8 @@ import com.rajcorporation.tender.model.PaginationData;
 import com.rajcorporation.tender.model.Tender;
 import com.rajcorporation.tender.model.TenderList;
 import com.rajcorporation.tender.model.TenderStatus;
+import com.rajcorporation.tender.model.TenderSummary;
+import com.rajcorporation.tender.model.TenderSummaryList;
 import com.rajcorporation.tender.service.TenderService;
 import com.rajcorporation.tender.validator.SaveGroup;
 import com.rajcorporation.tender.validator.TenderValidator;
@@ -117,14 +119,14 @@ public class TenderController {
 			PageRequest req = new PageRequest(page, size);
 			Page<Tender> pagedInformation = service.findAll(req);
 
-			list.setTenders(pagedInformation.getContent());
+			list.setData(pagedInformation.getContent());
 			list.setPaginationData(getPaginationData(pagedInformation));
 
 			return ResponseEntity.ok(list);
 		} else {
 			Tender tender = service.findTender(id);
 			if (tender != null)
-				list.setTenders(Arrays.asList(tender));
+				list.setData(Arrays.asList(tender));
 			return ResponseEntity.ok(list);
 		}
 	}
@@ -154,6 +156,28 @@ public class TenderController {
 		FileList fileList = new FileList();
 		fileList.setFiles(service.getFiles(tenderId));
 		return ResponseEntity.ok(fileList);
+	}
+
+	@GetMapping("/tenderSummary")
+	public ResponseEntity<TenderSummaryList> getSummary(@RequestParam(required = false) Long id, @RequestParam int page,
+			@RequestParam int size) {
+
+		TenderSummaryList list = new TenderSummaryList();
+
+		if (id == null) {
+			PageRequest req = new PageRequest(page, size);
+			Page<TenderSummary> pagedInformation = service.findSummary(req);
+
+			list.setData(pagedInformation.getContent());
+			list.setPaginationData(getPaginationData(pagedInformation));
+
+			return ResponseEntity.ok(list);
+		} else {
+			TenderSummary tender = service.findTenderSummary(id);
+			if (tender != null)
+				list.setData(Arrays.asList(tender));
+			return ResponseEntity.ok(list);
+		}
 	}
 
 	private <T> PaginationData getPaginationData(Page<T> pagedInformation) {

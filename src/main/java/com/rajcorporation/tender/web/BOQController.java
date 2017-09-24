@@ -3,6 +3,8 @@ package com.rajcorporation.tender.web;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ import com.rajcorporation.tender.exception.ValidationException;
 import com.rajcorporation.tender.model.BOQ;
 import com.rajcorporation.tender.model.BOQItem;
 import com.rajcorporation.tender.model.DataInspection;
+import com.rajcorporation.tender.model.DataInspection.DataInspectionStatus;
+import com.rajcorporation.tender.model.Tender;
+import com.rajcorporation.tender.repository.DataInspectionRepository;
 import com.rajcorporation.tender.service.BOQFinalizedException;
 import com.rajcorporation.tender.service.BOQNotFoundException;
 import com.rajcorporation.tender.service.BoqItemService;
@@ -41,6 +46,9 @@ public class BOQController {
 
 	@Autowired
 	BoqItemService itemService;
+
+	@Autowired
+	DataInspectionRepository diRepo;
 
 	@InitBinder
 	public void dataBinding(WebDataBinder binder) {
@@ -123,6 +131,17 @@ public class BOQController {
 			@RequestBody DataInspection inspection) {
 		BOQItem item = itemService.addDataInspection(boqItemId, inspection);
 		return ResponseEntity.ok(item);
+	}
+
+	@RequestMapping(path = "/admin/updateDataInspection", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public ResponseEntity<DataInspection> closeTender(@RequestParam Long inspectionId,
+			@RequestParam DataInspectionStatus status) {
+
+		DataInspection inspection = diRepo.findOne(inspectionId);
+		inspection.setStatus(status);
+
+		return ResponseEntity.ok(inspection);
 	}
 
 	@GetMapping("/getDataInspection")

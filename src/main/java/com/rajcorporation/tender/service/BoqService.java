@@ -13,6 +13,8 @@ public interface BoqService {
 
 	List<BOQ> findByTenderId(Long tendId);
 
+	BOQ findLatest(Long tenderId);
+
 	public BOQ freeze(Long id);
 
 	public BOQ addBoqItem(BOQItem item, Long boqId) throws BOQNotFoundException, BOQFinalizedException;

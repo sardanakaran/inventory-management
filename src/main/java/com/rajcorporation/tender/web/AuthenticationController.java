@@ -38,7 +38,7 @@ public class AuthenticationController {
             String refreshedToken = tokenHelper.refreshToken(authToken);
 
             Cookie authCookie = new Cookie( TOKEN_COOKIE, ( refreshedToken ) );
-            authCookie.setPath( "/" );
+            authCookie.setPath( "/tender" );
             authCookie.setHttpOnly( true );
             authCookie.setMaxAge( EXPIRES_IN );
             // Add cookie to response

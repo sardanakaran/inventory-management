@@ -1,6 +1,7 @@
 package com.rajcorporation.tender.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -67,6 +68,16 @@ public class BoqServiceImpl implements BoqService {
 		boqRepository.save(clone);
 
 		return clone;
+	}
+
+	@Override
+	public BOQ findLatest(Long tenderId) {
+		List<BOQ> boqZ = findByTenderId(tenderId);
+		Optional<BOQ> max = boqZ.stream().max((boq1, boq2) -> {
+			return boq1.getModifiedDateTime().compareTo(boq2.getModifiedDateTime());
+		});
+
+		return max.isPresent() ? max.get() : null;
 	}
 
 }

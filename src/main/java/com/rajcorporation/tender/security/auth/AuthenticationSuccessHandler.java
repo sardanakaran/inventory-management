@@ -1,6 +1,9 @@
 package com.rajcorporation.tender.security.auth;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rajcorporation.tender.security.TokenHelper;
+import com.rajcorporation.tender.security.auth.model.Authority;
 import com.rajcorporation.tender.security.auth.model.User;
 
 @Component
@@ -53,7 +57,55 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		// String jwtResponse = objectMapper.writeValueAsString( userTokenState
 		// );
 		response.setContentType("application/json");
-		response.getWriter().write(objectMapper.writeValueAsString(user));
+
+		AppUser appUser = new AppUser(user.getFirstname(), user.getLastname());
+
+		Collection<Authority> authorities = user.getAuthorities();
+		if (authorities != null && !authorities.isEmpty()) {
+			authorities.stream().forEach(auth -> {
+				appUser.withRole(auth.getAuthority());
+			});
+		}
+
+		response.getWriter().write(objectMapper.writeValueAsString(appUser));
 
 	}
+
+	static class AppUser {
+		String firstName;
+		String lastName;
+		List<String> roles = new ArrayList<>();
+
+		public AppUser(String firstName, String lastName) {
+			this.firstName = firstName;
+			this.lastName = lastName;
+		}
+
+		public String getFirstName() {
+			return firstName;
+		}
+
+		public void setFirstName(String firstName) {
+			this.firstName = firstName;
+		}
+
+		public String getLastName() {
+			return lastName;
+		}
+
+		public void setLastName(String lastName) {
+			this.lastName = lastName;
+		}
+
+		public AppUser withRole(String role) {
+			this.roles.add(role);
+			return this;
+		}
+
+		public List<String> getRoles() {
+			return roles;
+		}
+
+	}
+
 }

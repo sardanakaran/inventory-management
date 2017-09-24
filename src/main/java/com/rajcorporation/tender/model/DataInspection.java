@@ -41,6 +41,9 @@ public class DataInspection extends Changeable {
 	@JoinColumn(name = "inspection_id")
 	List<FileInfo> files;
 
+	@JsonIgnore
+	DataInspectionStatus status = DataInspectionStatus.IN_PROGRESS;
+
 	public DataInspection withFile(FileInfo info) {
 		if (files == null)
 			files = new ArrayList<>();
@@ -74,6 +77,20 @@ public class DataInspection extends Changeable {
 
 	public void setFiles(List<FileInfo> files) {
 		this.files = files;
+	}
+
+	@JsonProperty
+	public DataInspectionStatus getStatus() {
+		return status;
+	}
+
+	@JsonIgnore
+	public void setStatus(DataInspectionStatus status) {
+		this.status = status;
+	}
+
+	public enum DataInspectionStatus {
+		PASSED, FAILED, IN_PROGRESS
 	}
 
 }
